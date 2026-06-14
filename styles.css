@@ -13,7 +13,7 @@
 }
 * { box-sizing: border-box; }
 html, body {
-  margin: 0; height: 100%;
+  margin: 0; height: 100%; overflow: hidden;
   font-family: "Comic Sans MS", "Chalkboard SE", system-ui, sans-serif;
   color: var(--ink);
   background: linear-gradient(var(--sky), var(--grass));
@@ -21,54 +21,89 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 .screen { display: none; flex-direction: column; align-items: center; justify-content: center;
-  gap: 18px; min-height: 100vh; padding: 24px; text-align: center; }
+  gap: 1.6vh; height: 100vh; height: 100dvh; padding: 2vh 3vw; text-align: center; overflow: hidden; }
 .screen.active { display: flex; }
-h1 { font-size: clamp(28px, 6vw, 48px); margin: 4px; text-shadow: 2px 2px 0 #fff; }
-h2 { font-size: clamp(22px, 5vw, 36px); text-shadow: 2px 2px 0 #fff; }
+
+h1 { font-size: clamp(22px, 5vh, 46px); margin: 0; text-shadow: 2px 2px 0 #fff; }
+h2 { font-size: clamp(20px, 4vh, 34px); margin: 0; text-shadow: 2px 2px 0 #fff; }
+
 .big-btn {
-  font: inherit; font-size: clamp(22px, 5vw, 32px); font-weight: bold;
+  font: inherit; font-size: clamp(20px, 3.6vh, 30px); font-weight: bold;
   background: var(--gold); color: var(--ink); border: var(--outline);
-  border-radius: var(--radius); padding: 18px 36px; box-shadow: 0 6px 0 rgba(0,0,0,.35);
-  cursor: pointer; min-width: 220px; min-height: 72px;
+  border-radius: var(--radius); padding: 1.4vh 5vw; box-shadow: 0 6px 0 rgba(0,0,0,.35);
+  cursor: pointer; min-width: 200px; min-height: 56px;
 }
 .big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.35); }
-.text-link { background: none; border: none; font: inherit; font-size: 18px;
-  text-decoration: underline; color: var(--ink); cursor: pointer; padding: 8px; }
-.hero, .mouth, .village { width: min(80vw, 360px); }
-.streak-badge { background: var(--red); color: #fff; font-weight: bold; font-size: 22px;
-  border: var(--outline); border-radius: 999px; padding: 8px 20px; }
-.phase-banner { font-size: clamp(24px, 6vw, 40px); font-weight: bold; background: var(--paper);
-  border: var(--outline); border-radius: var(--radius); padding: 10px 24px; }
-.timer-row { display: flex; gap: 24px; align-items: center; justify-content: center; }
-.ring { width: 160px; height: 160px; }
-.cauldron { width: 120px; height: auto; }
-.motion-hint { font-size: clamp(18px, 4vw, 26px); background: rgba(255,255,255,.7);
-  border-radius: var(--radius); padding: 8px 18px; }
-.rating-row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-.face { font-size: 64px; background: var(--paper); border: var(--outline);
-  border-radius: var(--radius); padding: 16px; cursor: pointer; display: flex;
-  flex-direction: column; align-items: center; gap: 6px; min-width: 120px; }
-.face span { font-size: 18px; }
+.text-link { background: none; border: none; font: inherit; font-size: clamp(15px, 2.4vh, 19px);
+  text-decoration: underline; color: var(--ink); cursor: pointer; padding: 6px; }
+
+/* Visuals an Viewport-Höhe gekoppelt, damit nichts scrollt.
+   Maße direkt aufs SVG, sonst kollabiert das Inline-SVG. */
+.hero svg, .mouth svg, .ring svg, .cauldron svg, .village svg { display: block; }
+.hero svg { height: min(38vh, 40vw); width: auto; }
+.mouth svg { height: min(64vh, 46vw); width: auto; }
+.ring svg { width: min(24vh, 168px); height: auto; }
+.cauldron svg { width: min(26vh, 184px); height: auto; }
+.village svg { width: min(46vw, 360px); height: auto; }
+
+.streak-badge { background: var(--red); color: #fff; font-weight: bold; font-size: clamp(16px, 2.6vh, 22px);
+  border: var(--outline); border-radius: 999px; padding: 0.8vh 20px; }
+.phase-banner { font-size: clamp(20px, 4.6vh, 40px); font-weight: bold; background: var(--paper);
+  border: var(--outline); border-radius: var(--radius); padding: 1vh 4vw; }
+
+/* Querformat-Layout (zwei Spalten) für die dichten Bildschirme */
+.brush-main, .reward-main {
+  display: flex; flex-direction: row; align-items: center; justify-content: center;
+  gap: 4vw; width: 100%; flex: 1 1 auto; min-height: 0;
+}
+.brush-side, .reward-side {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2vh;
+}
+.reward-side { max-width: 52vw; }
+
+.timer-row { display: flex; gap: 4vw; align-items: center; justify-content: center; }
+.motion-hint { font-size: clamp(16px, 2.8vh, 26px); background: rgba(255,255,255,.7);
+  border-radius: var(--radius); padding: 1vh 18px; max-width: 42vw; }
+
+.rating-row { display: flex; gap: 2.5vw; flex-wrap: wrap; justify-content: center; }
+.face { font-size: clamp(40px, 8vh, 64px); background: var(--paper); border: var(--outline);
+  border-radius: var(--radius); padding: 1.4vh 2vw; cursor: pointer; display: flex;
+  flex-direction: column; align-items: center; gap: 6px; min-width: 110px; }
+.face span { font-size: clamp(14px, 2.2vh, 18px); }
 .face:active { transform: scale(0.95); }
-.elmex-banner { background: var(--potion); color: #fff; font-weight: bold; font-size: 22px;
-  border: var(--outline); border-radius: var(--radius); padding: 14px 22px;
-  animation: pop 0.6s ease; }
+
+.elmex-banner { background: var(--potion); color: #fff; font-weight: bold; font-size: clamp(15px, 2.4vh, 22px);
+  border: var(--outline); border-radius: var(--radius); padding: 1vh 18px; animation: pop 0.6s ease; }
 @keyframes pop { 0% { transform: scale(0.5); } 70% { transform: scale(1.1); } 100% { transform: scale(1);} }
+
 .zone-active { animation: glow 1s ease-in-out infinite alternate; }
 @keyframes glow { from { filter: drop-shadow(0 0 2px var(--gold)); }
   to { filter: drop-shadow(0 0 14px var(--gold)); } }
-/* Zahnbürste: zeigt pro KAI-Phase die richtige Putzbewegung */
+
+/* Zahnbürste: deutlich unterscheidbare Bewegung pro KAI-Phase */
 #brush-anim { transform-box: fill-box; transform-origin: center; }
-#brush-anim.motion-k { animation: brush-x 0.45s ease-in-out infinite alternate; }
-#brush-anim.motion-a { animation: brush-circle 1.1s linear infinite; }
-#brush-anim.motion-i { animation: brush-y 0.55s ease-in-out infinite alternate; }
-@keyframes brush-x { from { transform: translateX(-10px); } to { transform: translateX(10px); } }
-@keyframes brush-y { from { transform: translateY(-9px); } to { transform: translateY(9px); } }
+#brush-anim.motion-k { animation: brush-scrub 0.32s ease-in-out infinite alternate; }
+#brush-anim.motion-a { animation: brush-circle 1.0s linear infinite; }
+#brush-anim.motion-i { animation: brush-wipe 0.95s ease-in-out infinite; }
+@keyframes brush-scrub { from { transform: translateX(-14px); } to { transform: translateX(14px); } }
 @keyframes brush-circle {
-  0% { transform: translate(0, -8px); } 25% { transform: translate(8px, 0); }
-  50% { transform: translate(0, 8px); } 75% { transform: translate(-8px, 0); }
-  100% { transform: translate(0, -8px); } }
-.sub-json { width: min(90vw, 480px); font-family: monospace; font-size: 12px;
+  0% { transform: translate(0, -15px); } 25% { transform: translate(15px, 0); }
+  50% { transform: translate(0, 15px); } 75% { transform: translate(-15px, 0); }
+  100% { transform: translate(0, -15px); } }
+@keyframes brush-wipe {
+  0% { transform: translateY(-15px); } 55% { transform: translateY(14px); }
+  70% { transform: translateY(14px); } 100% { transform: translateY(-15px); } }
+
+/* Hochformat: gestapelt statt zwei Spalten */
+@media (orientation: portrait) {
+  .brush-main, .reward-main { flex-direction: column; gap: 2vh; }
+  .mouth svg { height: auto; width: min(78vw, 340px); }
+  .hero svg { height: auto; width: min(70vw, 300px); }
+  .reward-side { max-width: 92vw; }
+  .motion-hint { max-width: 88vw; }
+}
+
+.sub-json { width: min(86vw, 480px); font-family: monospace; font-size: 12px;
   border: var(--outline); border-radius: 12px; padding: 10px; }
 .push-status { font-weight: bold; }
 .sub-label { font-size: 14px; }

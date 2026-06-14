@@ -12,7 +12,7 @@ export function mouthSvg() {
   const lowerRight = [117, 129, 141].map((x) => lower(x, 'unten-rechts')).join('');
   const lowerLeft = [153, 165, 177].map((x) => lower(x, 'unten-links')).join('');
 
-  return `<svg viewBox="0 0 300 312" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallier-Gesicht mit offenem Mund und Zahnbürste">
+  return `<svg viewBox="-18 0 336 318" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallier-Gesicht mit offenem Mund und Zahnbürste">
     <!-- Kopf -->
     <ellipse cx="150" cy="170" rx="100" ry="106" fill="#ffe0b2" stroke="#2b2b2b" stroke-width="6"/>
     <!-- Helm mit Flügeln -->

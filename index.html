@@ -23,12 +23,16 @@
   <!-- PUTZREISE -->
   <section id="screen-brush" class="screen">
     <div id="phase-banner" class="phase-banner"></div>
-    <div id="mouth-slot" class="mouth"></div>
-    <div class="timer-row">
-      <div id="ring-slot" class="ring"></div>
-      <div id="cauldron-slot" class="cauldron"></div>
+    <div class="brush-main">
+      <div id="mouth-slot" class="mouth"></div>
+      <div class="brush-side">
+        <div class="timer-row">
+          <div id="ring-slot" class="ring"></div>
+          <div id="cauldron-slot" class="cauldron"></div>
+        </div>
+        <p id="motion-hint" class="motion-hint"></p>
+      </div>
     </div>
-    <p id="motion-hint" class="motion-hint"></p>
     <button id="stop-btn" class="text-link">Abbrechen</button>
   </section>
 
@@ -44,11 +48,15 @@
 
   <!-- BELOHNUNG -->
   <section id="screen-reward" class="screen">
-    <div id="reward-hero" class="hero"></div>
-    <h2 id="reward-text">Sieg!</h2>
-    <div id="elmex-banner" class="elmex-banner" hidden></div>
-    <div id="village-slot" class="village"></div>
-    <button id="done-btn" class="big-btn">Fertig 🎉</button>
+    <div class="reward-main">
+      <div id="reward-hero" class="hero"></div>
+      <div class="reward-side">
+        <h2 id="reward-text">Sieg!</h2>
+        <div id="elmex-banner" class="elmex-banner" hidden></div>
+        <div id="village-slot" class="village"></div>
+        <button id="done-btn" class="big-btn">Fertig 🎉</button>
+      </div>
+    </div>
   </section>
 
   <!-- ELTERN / SETUP -->
