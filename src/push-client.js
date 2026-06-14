@@ -1,5 +1,5 @@
 // src/push-client.js
-const VAPID_PUBLIC_KEY = 'BG3xmBKadhIpLMuC6tK_xyASeaHZBV_xFGjc0xtLHBCCie6tA1mwK1R6kSP4uc_zCXXbP8sQDlpzuVGCpFr83-U';
+const VAPID_PUBLIC_KEY = 'BJoDg0JBVfUl6itqP6Nx3h9pb6T4-lGCeSfV_Nc5JjVW767zxgWH8NNYudFoV4fRnU2vpIZrCEEcMattDckRIpw';
 
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
