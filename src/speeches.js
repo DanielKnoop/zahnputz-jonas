@@ -21,5 +21,6 @@ export const ELMEX_REMINDER =
   'Beim Teutates — heute ist elmex-Tag! Nicht das Zaubertrank-Gel vergessen, Jonas!';
 
 export function pick(list, seed) {
-  return list[seed % list.length];
+  const n = list.length;
+  return list[((seed % n) + n) % n];
 }
