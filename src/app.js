@@ -88,8 +88,9 @@ function renderTick(now) {
   const fillEl = document.getElementById('potion-fill');
   if (fillEl) {
     const done = 1 - r.totalRemaining / 180;
-    const h = 70 * done;
-    fillEl.setAttribute('y', String(130 - h));
+    // Clip-Pfad des Kessels reicht von y=55 bis y=135 (80px hoch).
+    const h = 80 * done;
+    fillEl.setAttribute('y', String(135 - h));
     fillEl.setAttribute('height', String(h));
   }
   rafId = requestAnimationFrame(renderTick);
