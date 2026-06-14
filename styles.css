@@ -1,0 +1,63 @@
+/* styles.css */
+:root {
+  --gold: #f4c430;
+  --grass: #4a9d3f;
+  --sky: #7ec8e3;
+  --stone: #9aa5b1;
+  --potion: #57c84d;
+  --ink: #2b2b2b;
+  --paper: #fdf6e3;
+  --red: #e2483d;
+  --radius: 22px;
+  --outline: 4px solid var(--ink);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; height: 100%;
+  font-family: "Comic Sans MS", "Chalkboard SE", system-ui, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(var(--sky), var(--grass));
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.screen { display: none; flex-direction: column; align-items: center; justify-content: center;
+  gap: 18px; min-height: 100vh; padding: 24px; text-align: center; }
+.screen.active { display: flex; }
+h1 { font-size: clamp(28px, 6vw, 48px); margin: 4px; text-shadow: 2px 2px 0 #fff; }
+h2 { font-size: clamp(22px, 5vw, 36px); text-shadow: 2px 2px 0 #fff; }
+.big-btn {
+  font: inherit; font-size: clamp(22px, 5vw, 32px); font-weight: bold;
+  background: var(--gold); color: var(--ink); border: var(--outline);
+  border-radius: var(--radius); padding: 18px 36px; box-shadow: 0 6px 0 rgba(0,0,0,.35);
+  cursor: pointer; min-width: 220px; min-height: 72px;
+}
+.big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.35); }
+.text-link { background: none; border: none; font: inherit; font-size: 18px;
+  text-decoration: underline; color: var(--ink); cursor: pointer; padding: 8px; }
+.hero, .mouth, .village { width: min(80vw, 360px); }
+.streak-badge { background: var(--red); color: #fff; font-weight: bold; font-size: 22px;
+  border: var(--outline); border-radius: 999px; padding: 8px 20px; }
+.phase-banner { font-size: clamp(24px, 6vw, 40px); font-weight: bold; background: var(--paper);
+  border: var(--outline); border-radius: var(--radius); padding: 10px 24px; }
+.timer-row { display: flex; gap: 24px; align-items: center; justify-content: center; }
+.ring { width: 160px; height: 160px; }
+.cauldron { width: 130px; height: 130px; }
+.motion-hint { font-size: clamp(18px, 4vw, 26px); background: rgba(255,255,255,.7);
+  border-radius: var(--radius); padding: 8px 18px; }
+.rating-row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.face { font-size: 64px; background: var(--paper); border: var(--outline);
+  border-radius: var(--radius); padding: 16px; cursor: pointer; display: flex;
+  flex-direction: column; align-items: center; gap: 6px; min-width: 120px; }
+.face span { font-size: 18px; }
+.face:active { transform: scale(0.95); }
+.elmex-banner { background: var(--potion); color: #fff; font-weight: bold; font-size: 22px;
+  border: var(--outline); border-radius: var(--radius); padding: 14px 22px;
+  animation: pop 0.6s ease; }
+@keyframes pop { 0% { transform: scale(0.5); } 70% { transform: scale(1.1); } 100% { transform: scale(1);} }
+.zone-active { animation: glow 1s ease-in-out infinite alternate; }
+@keyframes glow { from { filter: drop-shadow(0 0 2px var(--gold)); }
+  to { filter: drop-shadow(0 0 14px var(--gold)); } }
+.sub-json { width: min(90vw, 480px); font-family: monospace; font-size: 12px;
+  border: var(--outline); border-radius: 12px; padding: 10px; }
+.push-status { font-weight: bold; }
+.sub-label { font-size: 14px; }
