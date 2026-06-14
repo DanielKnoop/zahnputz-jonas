@@ -61,6 +61,14 @@ function highlightZone(zoneId) {
   }
 }
 
+function showMotionArrow(phase) {
+  const arrow = document.getElementById('motion-arrow');
+  if (!arrow) return;
+  arrow.style.display = '';
+  arrow.classList.remove('motion-k', 'motion-a', 'motion-i');
+  arrow.classList.add('motion-' + phase.toLowerCase());
+}
+
 function renderTick(now) {
   const elapsed = (now - startTs) / 1000;
   const r = stepAtElapsed(sequence, elapsed);
@@ -71,6 +79,7 @@ function renderTick(now) {
     lastPhase = r.step.phase;
     $('phase-banner').textContent = `${r.step.phase} — ${r.step.phaseLabel}`;
     $('motion-hint').textContent = PHASE_INTROS[r.step.phase];
+    showMotionArrow(r.step.phase);
     highlightZone(r.step.zoneId);
     beep();
   } else {

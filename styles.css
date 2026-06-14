@@ -57,6 +57,15 @@ h2 { font-size: clamp(22px, 5vw, 36px); text-shadow: 2px 2px 0 #fff; }
 .zone-active { animation: glow 1s ease-in-out infinite alternate; }
 @keyframes glow { from { filter: drop-shadow(0 0 2px var(--gold)); }
   to { filter: drop-shadow(0 0 14px var(--gold)); } }
+/* Bewegungspfeil: zeigt pro KAI-Phase die richtige Putzbewegung */
+#motion-arrow { transform-box: fill-box; transform-origin: center; }
+#motion-arrow.motion-k { animation: brush-x 0.7s ease-in-out infinite alternate; }
+#motion-arrow.motion-a { animation: brush-rot 1.6s linear infinite; }
+#motion-arrow.motion-i { animation: brush-y 0.8s ease-in-out infinite alternate; }
+@keyframes brush-x { from { transform: translateX(-24px); } to { transform: translateX(24px); } }
+@keyframes brush-rot { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes brush-y { from { transform: rotate(-90deg) translateX(-18px); }
+  to { transform: rotate(-90deg) translateX(18px); } }
 .sub-json { width: min(90vw, 480px); font-family: monospace; font-size: 12px;
   border: var(--outline); border-radius: 12px; padding: 10px; }
 .push-status { font-weight: bold; }
