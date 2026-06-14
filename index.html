@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Jonas' Zahn-Mission</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- BEGRÜßUNG -->
+  <section id="screen-start" class="screen active">
+    <div id="hero-slot" class="hero"></div>
+    <h1 id="greeting">Hallo Jonas!</h1>
+    <div id="streak-badge" class="streak-badge" hidden></div>
+    <button id="start-btn" class="big-btn">▶ Los geht's!</button>
+    <button id="parent-link" class="text-link">⚙︎ Eltern</button>
+  </section>
+
+  <!-- PUTZREISE -->
+  <section id="screen-brush" class="screen">
+    <div id="phase-banner" class="phase-banner"></div>
+    <div id="mouth-slot" class="mouth"></div>
+    <div class="timer-row">
+      <div id="ring-slot" class="ring"></div>
+      <div id="cauldron-slot" class="cauldron"></div>
+    </div>
+    <p id="motion-hint" class="motion-hint"></p>
+    <button id="stop-btn" class="text-link">Abbrechen</button>
+  </section>
+
+  <!-- BEWERTUNG -->
+  <section id="screen-rate" class="screen">
+    <h2>Wie gut hat es geklappt, Jonas?</h2>
+    <div class="rating-row">
+      <button class="face" data-rating="super">😄<span>Super</span></button>
+      <button class="face" data-rating="ok">🙂<span>Ganz gut</span></button>
+      <button class="face" data-rating="ueben">😐<span>Muss ich üben</span></button>
+    </div>
+  </section>
+
+  <!-- BELOHNUNG -->
+  <section id="screen-reward" class="screen">
+    <div id="reward-hero" class="hero"></div>
+    <h2 id="reward-text">Sieg!</h2>
+    <div id="elmex-banner" class="elmex-banner" hidden></div>
+    <div id="village-slot" class="village"></div>
+    <button id="done-btn" class="big-btn">Fertig 🎉</button>
+  </section>
+
+  <!-- ELTERN / SETUP -->
+  <section id="screen-parent" class="screen">
+    <h2>Eltern-Einrichtung</h2>
+    <p>Benachrichtigung für den Sonntags-elmex-Hinweis aktivieren:</p>
+    <button id="enable-push-btn" class="big-btn">🔔 Push aktivieren</button>
+    <p id="push-status" class="push-status"></p>
+    <label class="sub-label">Push-Abo (einmalig als GitHub-Secret hinterlegen):</label>
+    <textarea id="sub-json" class="sub-json" readonly rows="6"></textarea>
+    <button id="copy-sub-btn" class="text-link">📋 Kopieren</button>
+    <button id="parent-back" class="text-link">← Zurück</button>
+  </section>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
