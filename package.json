@@ -7,6 +7,7 @@
     "test": "node --test"
   },
   "devDependencies": {
+    "sharp": "^0.35.1",
     "web-push": "^3.6.7"
   }
 }
