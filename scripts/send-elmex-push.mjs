@@ -16,7 +16,7 @@ if (!pub || !priv || !sub) {
   process.exit(1);
 }
 
-webpush.setVapidDetails('mailto:daniel.knoop@mum.de', pub, priv);
+webpush.setVapidDetails('mailto:elmex-push@example.com', pub, priv);
 
 const payload = JSON.stringify({
   title: 'Beim Teutates — elmex-Tag!',
