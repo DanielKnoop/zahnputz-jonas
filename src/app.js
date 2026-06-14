@@ -35,3 +35,86 @@ $('stop-btn').addEventListener('click', () => show('screen-start'));
 
 renderStart();
 show('screen-start');
+
+// --- Putzreise ---
+const sequence = buildSequence();
+let rafId = null;
+let startTs = null;
+let lastPhase = null;
+
+function setupBrushDom() {
+  $('mouth-slot').innerHTML = mouthSvg();
+  $('ring-slot').innerHTML = ringSvg();
+  $('cauldron-slot').innerHTML = cauldronSvg();
+  lastPhase = null;
+}
+
+function highlightZone(zoneId) {
+  document.querySelectorAll('#mouth-slot [data-zone]').forEach((el) => {
+    el.classList.remove('zone-active');
+    el.setAttribute('fill', '#fff');
+  });
+  for (const target of ZONE_TARGETS[zoneId] ?? []) {
+    const el = document.querySelector(`#mouth-slot [data-zone="${target}"]`);
+    if (el) { el.classList.add('zone-active'); el.setAttribute('fill', '#fff7c0'); }
+  }
+}
+
+function renderTick(now) {
+  const elapsed = (now - startTs) / 1000;
+  const r = stepAtElapsed(sequence, elapsed);
+  if (r.done) { finishBrushing(); return; }
+
+  // Phasenbanner + Spruch bei Wechsel
+  if (r.step.phase !== lastPhase) {
+    lastPhase = r.step.phase;
+    $('phase-banner').textContent = `${r.step.phase} — ${r.step.phaseLabel}`;
+    $('motion-hint').textContent = PHASE_INTROS[r.step.phase];
+    highlightZone(r.step.zoneId);
+    beep();
+  } else {
+    highlightZone(r.step.zoneId);
+  }
+
+  // Ring (Restzeit im aktuellen Schritt)
+  const ringEl = document.getElementById('ring-progress');
+  const labelEl = document.getElementById('ring-label');
+  if (ringEl) {
+    const frac = r.remainingInStep / r.step.seconds;
+    ringEl.setAttribute('stroke-dashoffset', String(RING_CIRCUMFERENCE * (1 - frac)));
+    labelEl.textContent = String(Math.ceil(r.remainingInStep));
+  }
+  // Kessel (Gesamtfortschritt)
+  const fillEl = document.getElementById('potion-fill');
+  if (fillEl) {
+    const done = 1 - r.totalRemaining / 180;
+    const h = 70 * done;
+    fillEl.setAttribute('y', String(130 - h));
+    fillEl.setAttribute('height', String(h));
+  }
+  rafId = requestAnimationFrame(renderTick);
+}
+
+function startBrushing() {
+  setupBrushDom();
+  show('screen-brush');
+  startTs = performance.now();
+  rafId = requestAnimationFrame(renderTick);
+}
+
+function finishBrushing() {
+  cancelAnimationFrame(rafId);
+  show('screen-rate');
+}
+
+// kurzer Bestätigungston (WebAudio, keine Datei nötig)
+function beep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.frequency.value = 660; o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.15, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+    o.start(); o.stop(ctx.currentTime + 0.25);
+  } catch { /* Audio optional */ }
+}
