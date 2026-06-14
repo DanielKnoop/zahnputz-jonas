@@ -118,3 +118,33 @@ function beep() {
     o.start(); o.stop(ctx.currentTime + 0.25);
   } catch { /* Audio optional */ }
 }
+
+// --- Bewertung & Belohnung ---
+document.querySelectorAll('.face').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const rating = btn.dataset.rating;
+    state = recordBrushing(state, todayIso(), rating);
+    saveState(localStorage, state);
+    renderReward();
+    show('screen-reward');
+  });
+});
+
+function renderReward() {
+  $('reward-hero').innerHTML = heroSvg({ cheering: true });
+  $('reward-text').textContent = `${pick(FINISHES, seed)}  🔥 ${state.streak} in Folge!`;
+  $('village-slot').innerHTML = villageSvg(state.hinkelsteine);
+  const banner = $('elmex-banner');
+  if (isSundayInBerlin(new Date())) {
+    banner.hidden = false;
+    banner.textContent = ELMEX_REMINDER;
+  } else {
+    banner.hidden = true;
+  }
+}
+
+$('done-btn').addEventListener('click', () => {
+  state = loadState(localStorage);
+  renderStart();
+  show('screen-start');
+});
