@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(gh --version)",
+      "Bash(gh auth *)",
+      "Bash(git config *)",
+      "Bash(npm --version)",
+      "Bash(git init *)",
+      "Bash(printf \"node_modules/\\\\n.DS_Store\\\\n*.log\\\\n\")",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Design/Spezifikation: Zähneputz-Helfer für Jonas *)"
+    ]
+  }
+}
