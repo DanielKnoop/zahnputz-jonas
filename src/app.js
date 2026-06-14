@@ -9,6 +9,7 @@ import { mouthSvg, ZONE_TARGETS } from './svg/mouth.js';
 import { ringSvg, RING_CIRCUMFERENCE } from './svg/ring.js';
 import { cauldronSvg } from './svg/cauldron.js';
 import { villageSvg } from './svg/village.js';
+import { registerSW, enablePush } from './push-client.js';
 
 const $ = (id) => document.getElementById(id);
 const screens = ['screen-start', 'screen-brush', 'screen-rate', 'screen-reward', 'screen-parent'];
@@ -148,4 +149,23 @@ $('done-btn').addEventListener('click', () => {
   state = loadState(localStorage);
   renderStart();
   show('screen-start');
+});
+
+// --- PWA / Push ---
+registerSW().catch((e) => console.warn('SW-Registrierung fehlgeschlagen', e));
+
+$('enable-push-btn').addEventListener('click', async () => {
+  try {
+    const subJson = await enablePush();
+    $('push-status').textContent = '✅ Aktiviert. Abo unten als GitHub-Secret hinterlegen.';
+    $('sub-json').value = subJson;
+  } catch (e) {
+    $('push-status').textContent = '⚠️ ' + e.message;
+  }
+});
+
+$('copy-sub-btn').addEventListener('click', async () => {
+  const ta = $('sub-json');
+  try { await navigator.clipboard.writeText(ta.value); $('push-status').textContent = '📋 Kopiert!'; }
+  catch { ta.select(); document.execCommand('copy'); }
 });
