@@ -1,32 +1,51 @@
 // src/svg/mouth.js
-// Stilisierter offener Mund von vorne: Ober-/Unterkiefer, je 2 Quadranten.
+// Gallier-Kopf von vorne mit natürlich geformtem, offenem Mund. Die Zähne sind
+// in vier Zonen gruppiert (oben/unten × rechts/links), die Zahnbürste (#brush-pos
+// /#brush-anim) wird von app.js über die aktive Zone gesetzt und animiert.
 export function mouthSvg() {
-  return `<svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mund mit Zähnen">
-    <ellipse cx="150" cy="130" rx="140" ry="120" fill="#e2483d"/>
-    <ellipse cx="150" cy="150" rx="80" ry="60" fill="#7a1f18"/>
-    <!-- Oberkiefer-Zahnreihe -->
-    <g id="zone-oben">
-      <rect data-zone="oben-rechts" x="40"  y="30" width="100" height="46" rx="14" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
-      <rect data-zone="oben-links"  x="160" y="30" width="100" height="46" rx="14" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
+  const upper = (x, zone) =>
+    `<rect data-zone="${zone}" x="${x}" y="192" width="11" height="22" rx="4" fill="#fff" stroke="#2b2b2b" stroke-width="3"/>`;
+  const lower = (x, zone) =>
+    `<rect data-zone="${zone}" x="${x}" y="224" width="11" height="20" rx="4" fill="#fff" stroke="#2b2b2b" stroke-width="3"/>`;
+  const upperRight = [117, 129, 141].map((x) => upper(x, 'oben-rechts')).join('');
+  const upperLeft = [153, 165, 177].map((x) => upper(x, 'oben-links')).join('');
+  const lowerRight = [117, 129, 141].map((x) => lower(x, 'unten-rechts')).join('');
+  const lowerLeft = [153, 165, 177].map((x) => lower(x, 'unten-links')).join('');
+
+  return `<svg viewBox="0 0 300 312" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallier-Gesicht mit offenem Mund und Zahnbürste">
+    <!-- Kopf -->
+    <ellipse cx="150" cy="170" rx="100" ry="106" fill="#ffe0b2" stroke="#2b2b2b" stroke-width="6"/>
+    <!-- Helm mit Flügeln -->
+    <path d="M64 116 a86 86 0 0 1 172 0 z" fill="#b0bec5" stroke="#2b2b2b" stroke-width="6"/>
+    <path d="M64 96 q-56 -8 -72 22 q46 0 72 10 z" fill="#fff" stroke="#2b2b2b" stroke-width="5"/>
+    <path d="M236 96 q56 -8 72 22 q-46 0 -72 10 z" fill="#fff" stroke="#2b2b2b" stroke-width="5"/>
+    <!-- Augen -->
+    <circle cx="120" cy="152" r="7" fill="#2b2b2b"/>
+    <circle cx="180" cy="152" r="7" fill="#2b2b2b"/>
+    <!-- Schnurrbart -->
+    <path d="M110 180 q40 24 80 0" stroke="#d7a13b" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <!-- Mund: Lippen + Höhle + Zunge (natürliche, ovale Form) -->
+    <ellipse cx="150" cy="218" rx="64" ry="42" fill="#c0473d" stroke="#2b2b2b" stroke-width="5"/>
+    <ellipse cx="150" cy="219" rx="53" ry="32" fill="#7a1f18"/>
+    <ellipse cx="150" cy="240" rx="30" ry="12" fill="#d4537e"/>
+    <!-- Zähne -->
+    <g>${upperRight}${upperLeft}</g>
+    <g>${lowerRight}${lowerLeft}</g>
+    <!-- Zahnbürste (Position + Bewegung von app.js gesteuert) -->
+    <g id="brush-pos" transform="translate(150 200)">
+      <g id="brush-anim">
+        <rect x="-9" y="-66" width="18" height="50" rx="7" fill="#57c84d" stroke="#2b2b2b" stroke-width="4"/>
+        <rect x="-18" y="-20" width="36" height="20" rx="6" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
+        <line x1="-12" y1="0" x2="-12" y2="9" stroke="#2b2b2b" stroke-width="3"/>
+        <line x1="-4" y1="0" x2="-4" y2="9" stroke="#2b2b2b" stroke-width="3"/>
+        <line x1="4" y1="0" x2="4" y2="9" stroke="#2b2b2b" stroke-width="3"/>
+        <line x1="12" y1="0" x2="12" y2="9" stroke="#2b2b2b" stroke-width="3"/>
+      </g>
     </g>
-    <!-- Unterkiefer-Zahnreihe -->
-    <g id="zone-unten">
-      <rect data-zone="unten-rechts" x="40"  y="184" width="100" height="46" rx="14" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
-      <rect data-zone="unten-links"  x="160" y="184" width="100" height="46" rx="14" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
-    </g>
-    <!-- Bewegungspfeil (von app.js ein/ausgeblendet & positioniert) -->
-    <g id="motion-arrow" style="display:none">
-      <path d="M120 130 h60" stroke="#f4c430" stroke-width="8" marker-end="url(#ah)"/>
-    </g>
-    <defs>
-      <marker id="ah" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
-        <path d="M0 0 L10 5 L0 10 z" fill="#f4c430"/>
-      </marker>
-    </defs>
   </svg>`;
 }
 
-// Mappt eine Zonen-ID aus kai-config auf die anzusprechenden Rechteck-Marker.
+// Mappt eine Zonen-ID aus kai-config auf die anzusprechenden Zahn-Marker.
 export const ZONE_TARGETS = {
   'k-oben': ['oben-rechts', 'oben-links'],
   'k-unten': ['unten-rechts', 'unten-links'],
@@ -36,4 +55,16 @@ export const ZONE_TARGETS = {
   'a-ul': ['unten-links'],
   'i-oben': ['oben-rechts', 'oben-links'],
   'i-unten': ['unten-rechts', 'unten-links'],
+};
+
+// Wohin die Zahnbürste pro Zone fährt (x, y im SVG; rot=180 putzt von unten).
+export const BRUSH_ANCHORS = {
+  'k-oben': { x: 150, y: 200, rot: 0 },
+  'k-unten': { x: 150, y: 226, rot: 180 },
+  'a-or': { x: 130, y: 200, rot: 0 },
+  'a-ol': { x: 170, y: 200, rot: 0 },
+  'a-ur': { x: 130, y: 226, rot: 180 },
+  'a-ul': { x: 170, y: 226, rot: 180 },
+  'i-oben': { x: 150, y: 200, rot: 0 },
+  'i-unten': { x: 150, y: 226, rot: 180 },
 };

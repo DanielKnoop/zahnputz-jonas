@@ -5,7 +5,7 @@ import { loadState, recordBrushing, saveState, todayIso } from './progress.js';
 import { isSundayInBerlin } from './schedule.js';
 import { GREETINGS, PHASE_INTROS, FINISHES, ELMEX_REMINDER, pick } from './speeches.js';
 import { heroSvg } from './svg/hero.js';
-import { mouthSvg, ZONE_TARGETS } from './svg/mouth.js';
+import { mouthSvg, ZONE_TARGETS, BRUSH_ANCHORS } from './svg/mouth.js';
 import { ringSvg, RING_CIRCUMFERENCE } from './svg/ring.js';
 import { cauldronSvg } from './svg/cauldron.js';
 import { villageSvg } from './svg/village.js';
@@ -42,12 +42,14 @@ const sequence = buildSequence();
 let rafId = null;
 let startTs = null;
 let lastPhase = null;
+let lastZoneId = null;
 
 function setupBrushDom() {
   $('mouth-slot').innerHTML = mouthSvg();
   $('ring-slot').innerHTML = ringSvg();
   $('cauldron-slot').innerHTML = cauldronSvg();
   lastPhase = null;
+  lastZoneId = null;
 }
 
 function highlightZone(zoneId) {
@@ -61,12 +63,14 @@ function highlightZone(zoneId) {
   }
 }
 
-function showMotionArrow(phase) {
-  const arrow = document.getElementById('motion-arrow');
-  if (!arrow) return;
-  arrow.style.display = '';
-  arrow.classList.remove('motion-k', 'motion-a', 'motion-i');
-  arrow.classList.add('motion-' + phase.toLowerCase());
+function positionBrush(step) {
+  const pos = document.getElementById('brush-pos');
+  const anim = document.getElementById('brush-anim');
+  if (!pos || !anim) return;
+  const a = BRUSH_ANCHORS[step.zoneId] ?? { x: 150, y: 213, rot: 0 };
+  pos.setAttribute('transform', `translate(${a.x} ${a.y}) rotate(${a.rot})`);
+  anim.classList.remove('motion-k', 'motion-a', 'motion-i');
+  anim.classList.add('motion-' + step.phase.toLowerCase());
 }
 
 function renderTick(now) {
@@ -74,16 +78,18 @@ function renderTick(now) {
   const r = stepAtElapsed(sequence, elapsed);
   if (r.done) { finishBrushing(); return; }
 
-  // Phasenbanner + Spruch bei Wechsel
+  // Phasenbanner + Spruch bei Phasenwechsel
   if (r.step.phase !== lastPhase) {
     lastPhase = r.step.phase;
     $('phase-banner').textContent = `${r.step.phase} — ${r.step.phaseLabel}`;
     $('motion-hint').textContent = PHASE_INTROS[r.step.phase];
-    showMotionArrow(r.step.phase);
-    highlightZone(r.step.zoneId);
     beep();
-  } else {
+  }
+  // Aktive Zähne hervorheben + Bürste neu setzen bei Zonenwechsel
+  if (r.step.zoneId !== lastZoneId) {
+    lastZoneId = r.step.zoneId;
     highlightZone(r.step.zoneId);
+    positionBrush(r.step);
   }
 
   // Ring (Restzeit im aktuellen Schritt)

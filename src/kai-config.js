@@ -6,8 +6,8 @@ export const KAI_CONFIG = [
     phase: 'K', label: 'Kauflächen', motion: 'hin-und-her',
     hint: 'Schrubb hin und her wie eine Säge!',
     zones: [
-      { id: 'k-oben', name: 'oben', seconds: 20 },
       { id: 'k-unten', name: 'unten', seconds: 20 },
+      { id: 'k-oben', name: 'oben', seconds: 20 },
     ],
   },
   {

@@ -1,5 +1,5 @@
 // service-worker.js
-const CACHE = 'zahn-jonas-v1';
+const CACHE = 'zahn-jonas-v2';
 const ASSETS = [
   './', './index.html', './styles.css', './manifest.webmanifest',
   './src/app.js', './src/kai-config.js', './src/kai-sequence.js', './src/timer.js',
