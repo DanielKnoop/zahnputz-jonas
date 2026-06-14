@@ -261,10 +261,11 @@ test('an der Grenze (20s) springt zum nächsten Schritt', () => {
   assert.equal(r.index, 1);
 });
 
-test('mitten im zweiten Schritt rechnet Restzeit korrekt', () => {
-  const r = stepAtElapsed(steps, 25);
+test('in der A-Phase rechnet Restzeit korrekt', () => {
+  // Bei 45s liegt der aktive Schritt in Phase A (steps[2]: 40..59).
+  const r = stepAtElapsed(steps, 45);
   assert.equal(r.step.phase, 'A');
-  assert.equal(r.remainingInStep, steps[2].end - 25);
+  assert.equal(r.remainingInStep, steps[2].end - 45);
 });
 
 test('bei >=180s ist done true', () => {
@@ -1118,8 +1119,9 @@ function renderTick(now) {
   const fillEl = document.getElementById('potion-fill');
   if (fillEl) {
     const done = 1 - r.totalRemaining / 180;
-    const h = 70 * done;
-    fillEl.setAttribute('y', String(130 - h));
+    // Clip-Pfad des Kessels reicht von y=55 bis y=135 (80px hoch).
+    const h = 80 * done;
+    fillEl.setAttribute('y', String(135 - h));
     fillEl.setAttribute('height', String(h));
   }
   rafId = requestAnimationFrame(renderTick);
