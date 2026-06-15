@@ -1,6 +1,6 @@
 // src/kai-config.js
 // Reihenfolge nach KAI: Kauflächen -> Außenflächen -> Innenflächen.
-// Summe der Sekunden = 180 (3 Minuten). Hier zentral anpassbar.
+// Summe der Sekunden ~ 3 Minuten (aktuell 175s). Hier zentral anpassbar.
 export const KAI_CONFIG = [
   {
     phase: 'K', label: 'Kauflächen', motion: 'hin-und-her',
@@ -14,18 +14,17 @@ export const KAI_CONFIG = [
     phase: 'A', label: 'Außenflächen', motion: 'kreisen',
     hint: 'Zähne aufeinander, male kleine Kreise!',
     zones: [
-      { id: 'a-or', name: 'oben rechts', seconds: 19 },
-      { id: 'a-ol', name: 'oben links', seconds: 19 },
-      { id: 'a-ur', name: 'unten rechts', seconds: 18 },
-      { id: 'a-ul', name: 'unten links', seconds: 19 },
+      { id: 'a-links', name: 'links', seconds: 25 },
+      { id: 'a-rechts', name: 'rechts', seconds: 25 },
+      { id: 'a-vorne', name: 'vorne', seconds: 25 },
     ],
   },
   {
     phase: 'I', label: 'Innenflächen', motion: 'von Rot nach Weiß',
     hint: 'Wische vom Zahnfleisch zum Zahn!',
     zones: [
-      { id: 'i-oben', name: 'oben', seconds: 33 },
-      { id: 'i-unten', name: 'unten', seconds: 32 },
+      { id: 'i-oben', name: 'oben', seconds: 30 },
+      { id: 'i-unten', name: 'unten', seconds: 30 },
     ],
   },
 ];

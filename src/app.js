@@ -5,7 +5,7 @@ import { loadState, recordBrushing, saveState, todayIso } from './progress.js';
 import { isSundayInBerlin } from './schedule.js';
 import { GREETINGS, PHASE_INTROS, FINISHES, ELMEX_REMINDER, pick } from './speeches.js';
 import { heroSvg } from './svg/hero.js';
-import { mouthSvg, ZONE_TARGETS, BRUSH_ANCHORS } from './svg/mouth.js';
+import { mouthSvg, ZONE_SELECTORS, BRUSH_ANCHORS } from './svg/mouth.js';
 import { ringSvg, RING_CIRCUMFERENCE } from './svg/ring.js';
 import { cauldronSvg } from './svg/cauldron.js';
 import { villageSvg } from './svg/village.js';
@@ -53,14 +53,16 @@ function setupBrushDom() {
 }
 
 function highlightZone(zoneId) {
-  document.querySelectorAll('#mouth-slot [data-zone]').forEach((el) => {
+  document.querySelectorAll('#mouth-slot [data-row]').forEach((el) => {
     el.classList.remove('zone-active');
-    el.setAttribute('fill', '#fff');
+    el.setAttribute('fill', '#cdcdcd');
   });
-  for (const target of ZONE_TARGETS[zoneId] ?? []) {
-    const el = document.querySelector(`#mouth-slot [data-zone="${target}"]`);
-    if (el) { el.classList.add('zone-active'); el.setAttribute('fill', '#fff7c0'); }
-  }
+  const sel = ZONE_SELECTORS[zoneId];
+  if (!sel) return;
+  document.querySelectorAll(`#mouth-slot ${sel}`).forEach((el) => {
+    el.classList.add('zone-active');
+    el.setAttribute('fill', '#fff39a');
+  });
 }
 
 function positionBrush(step) {
@@ -85,11 +87,12 @@ function renderTick(now) {
     $('motion-hint').textContent = PHASE_INTROS[r.step.phase];
     beep();
   }
-  // Aktive Zähne hervorheben + Bürste neu setzen bei Zonenwechsel
+  // Aktive Zähne hervorheben + Bürste neu setzen + Bereich anzeigen bei Zonenwechsel
   if (r.step.zoneId !== lastZoneId) {
     lastZoneId = r.step.zoneId;
     highlightZone(r.step.zoneId);
     positionBrush(r.step);
+    $('zone-label').textContent = r.step.zoneName;
   }
 
   // Ring (Restzeit im aktuellen Schritt)

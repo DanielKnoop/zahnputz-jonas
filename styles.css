@@ -50,6 +50,8 @@ h2 { font-size: clamp(20px, 4vh, 34px); margin: 0; text-shadow: 2px 2px 0 #fff; 
   border: var(--outline); border-radius: 999px; padding: 0.8vh 20px; }
 .phase-banner { font-size: clamp(20px, 4.6vh, 40px); font-weight: bold; background: var(--paper);
   border: var(--outline); border-radius: var(--radius); padding: 1vh 4vw; }
+.zone-label { font-size: clamp(18px, 3.4vh, 30px); font-weight: bold; color: #fff;
+  background: var(--ink); border-radius: 999px; padding: 0.6vh 5vw; text-transform: capitalize; }
 
 /* Querformat-Layout (zwei Spalten) für die dichten Bildschirme */
 .brush-main, .reward-main {

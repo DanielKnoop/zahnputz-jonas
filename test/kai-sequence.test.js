@@ -3,8 +3,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildSequence, totalSeconds } from '../src/kai-sequence.js';
 
-test('Summe der Schrittdauern ergibt 180 Sekunden', () => {
-  assert.equal(totalSeconds(), 180);
+test('Summe der Schrittdauern liegt nahe bei 3 Minuten', () => {
+  const total = totalSeconds();
+  assert.equal(total, 175);
+  assert.ok(total >= 150 && total <= 200);
 });
 
 test('erster Schritt ist Kauflächen, startet bei 0', () => {
@@ -21,10 +23,10 @@ test('Schritte sind lückenlos verkettet (end == nächster start)', () => {
   }
 });
 
-test('letzter Schritt endet bei 180 und ist Innenflächen', () => {
+test('letzter Schritt endet bei der Gesamtdauer und ist Innenflächen', () => {
   const steps = buildSequence();
   const last = steps[steps.length - 1];
-  assert.equal(last.end, 180);
+  assert.equal(last.end, totalSeconds());
   assert.equal(last.phase, 'I');
 });
 

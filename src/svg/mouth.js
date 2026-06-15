@@ -1,18 +1,25 @@
 // src/svg/mouth.js
-// Gallier-Kopf von vorne mit natürlich geformtem, offenem Mund. Die Zähne sind
-// in vier Zonen gruppiert (oben/unten × rechts/links), die Zahnbürste (#brush-pos
-// /#brush-anim) wird von app.js über die aktive Zone gesetzt und animiert.
-export function mouthSvg() {
-  const upper = (x, zone) =>
-    `<rect data-zone="${zone}" x="${x}" y="192" width="11" height="22" rx="4" fill="#fff" stroke="#2b2b2b" stroke-width="3"/>`;
-  const lower = (x, zone) =>
-    `<rect data-zone="${zone}" x="${x}" y="224" width="11" height="20" rx="4" fill="#fff" stroke="#2b2b2b" stroke-width="3"/>`;
-  const upperRight = [117, 129, 141].map((x) => upper(x, 'oben-rechts')).join('');
-  const upperLeft = [153, 165, 177].map((x) => upper(x, 'oben-links')).join('');
-  const lowerRight = [117, 129, 141].map((x) => lower(x, 'unten-rechts')).join('');
-  const lowerLeft = [153, 165, 177].map((x) => lower(x, 'unten-links')).join('');
+// Gallier-Kopf von vorne mit natürlich geformtem, offenem Mund. Jeder Zahn ist
+// nach Reihe (data-row: oben/unten) und Spalte (data-col: links/vorne/rechts)
+// ausgezeichnet. WICHTIG: aus Sicht des Betrachters/Bildschirms — "links" ist
+// die linke Bildschirmseite. Die Zahnbürste (#brush-pos/#brush-anim) wird von
+// app.js über die aktive Zone gesetzt und animiert.
+const COLS = [
+  { x: 113, col: 'links' },
+  { x: 124, col: 'links' },
+  { x: 139, col: 'vorne' },
+  { x: 150, col: 'vorne' },
+  { x: 165, col: 'rechts' },
+  { x: 176, col: 'rechts' },
+];
 
-  return `<svg viewBox="-18 0 336 318" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallier-Gesicht mit offenem Mund und Zahnbürste">
+export function mouthSvg() {
+  const tooth = (x, y, h, row, col) =>
+    `<rect data-row="${row}" data-col="${col}" x="${x}" y="${y}" width="11" height="${h}" rx="4" fill="#fff" stroke="#2b2b2b" stroke-width="3"/>`;
+  const upper = COLS.map((c) => tooth(c.x, 193, 23, 'oben', c.col)).join('');
+  const lower = COLS.map((c) => tooth(c.x, 226, 21, 'unten', c.col)).join('');
+
+  return `<svg viewBox="-18 0 336 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallier-Gesicht mit offenem Mund und Zahnbürste">
     <!-- Kopf -->
     <ellipse cx="150" cy="170" rx="100" ry="106" fill="#ffe0b2" stroke="#2b2b2b" stroke-width="6"/>
     <!-- Helm mit Flügeln -->
@@ -23,14 +30,14 @@ export function mouthSvg() {
     <circle cx="120" cy="152" r="7" fill="#2b2b2b"/>
     <circle cx="180" cy="152" r="7" fill="#2b2b2b"/>
     <!-- Schnurrbart -->
-    <path d="M110 180 q40 24 80 0" stroke="#d7a13b" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M108 181 q42 24 84 0" stroke="#d7a13b" stroke-width="14" fill="none" stroke-linecap="round"/>
     <!-- Mund: Lippen + Höhle + Zunge (natürliche, ovale Form) -->
-    <ellipse cx="150" cy="218" rx="64" ry="42" fill="#c0473d" stroke="#2b2b2b" stroke-width="5"/>
-    <ellipse cx="150" cy="219" rx="53" ry="32" fill="#7a1f18"/>
-    <ellipse cx="150" cy="240" rx="30" ry="12" fill="#d4537e"/>
+    <ellipse cx="150" cy="219" rx="68" ry="44" fill="#c0473d" stroke="#2b2b2b" stroke-width="5"/>
+    <ellipse cx="150" cy="219" rx="57" ry="34" fill="#7a1f18"/>
+    <ellipse cx="150" cy="242" rx="32" ry="12" fill="#d4537e"/>
     <!-- Zähne -->
-    <g>${upperRight}${upperLeft}</g>
-    <g>${lowerRight}${lowerLeft}</g>
+    <g>${upper}</g>
+    <g>${lower}</g>
     <!-- Zahnbürste (Position + Bewegung von app.js gesteuert) -->
     <g id="brush-pos" transform="translate(150 200)">
       <g id="brush-anim">
@@ -45,26 +52,26 @@ export function mouthSvg() {
   </svg>`;
 }
 
-// Mappt eine Zonen-ID aus kai-config auf die anzusprechenden Zahn-Marker.
-export const ZONE_TARGETS = {
-  'k-oben': ['oben-rechts', 'oben-links'],
-  'k-unten': ['unten-rechts', 'unten-links'],
-  'a-or': ['oben-rechts'],
-  'a-ol': ['oben-links'],
-  'a-ur': ['unten-rechts'],
-  'a-ul': ['unten-links'],
-  'i-oben': ['oben-rechts', 'oben-links'],
-  'i-unten': ['unten-rechts', 'unten-links'],
+// Mappt eine Zonen-ID aus kai-config auf einen CSS-Selektor (innerhalb #mouth-slot).
+// Kauflächen/Innenflächen: nach Reihe; Außenflächen: nach Spalte (volle Höhe).
+export const ZONE_SELECTORS = {
+  'k-oben': '[data-row="oben"]',
+  'k-unten': '[data-row="unten"]',
+  'a-links': '[data-col="links"]',
+  'a-rechts': '[data-col="rechts"]',
+  'a-vorne': '[data-col="vorne"]',
+  'i-oben': '[data-row="oben"]',
+  'i-unten': '[data-row="unten"]',
 };
 
 // Wohin die Zahnbürste pro Zone fährt (x, y im SVG; rot=180 putzt von unten).
+// Außenflächen: mittig auf voller Höhe (y=212), deutlich nach links/rechts versetzt.
 export const BRUSH_ANCHORS = {
   'k-oben': { x: 150, y: 200, rot: 0 },
   'k-unten': { x: 150, y: 226, rot: 180 },
-  'a-or': { x: 130, y: 200, rot: 0 },
-  'a-ol': { x: 170, y: 200, rot: 0 },
-  'a-ur': { x: 130, y: 226, rot: 180 },
-  'a-ul': { x: 170, y: 226, rot: 180 },
+  'a-links': { x: 119, y: 212, rot: 0 },
+  'a-rechts': { x: 181, y: 212, rot: 0 },
+  'a-vorne': { x: 150, y: 212, rot: 0 },
   'i-oben': { x: 150, y: 200, rot: 0 },
   'i-unten': { x: 150, y: 226, rot: 180 },
 };
