@@ -1,6 +1,7 @@
 // scripts/send-elmex-push.mjs
 import webpush from 'web-push';
 import { shouldSendNow } from './push-guard.js';
+import { ELMEX_REMINDERS, pickRandom } from '../src/speeches.js';
 
 const force = process.argv.includes('--force');
 if (!force && !shouldSendNow(new Date())) {
@@ -19,8 +20,8 @@ if (!pub || !priv || !sub) {
 webpush.setVapidDetails('mailto:elmex-push@example.com', pub, priv);
 
 const payload = JSON.stringify({
-  title: 'Beim Teutates — elmex-Tag!',
-  body: 'Heute ist Sonntag, Jonas: elmex gelée nicht vergessen! 🛡️',
+  title: 'elmex-Tag, Jonas! 🛡️',
+  body: pickRandom(ELMEX_REMINDERS),
 });
 
 try {

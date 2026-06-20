@@ -3,7 +3,7 @@ import { buildSequence } from './kai-sequence.js';
 import { stepAtElapsed } from './timer.js';
 import { loadState, recordBrushing, saveState, todayIso } from './progress.js';
 import { isSundayInBerlin } from './schedule.js';
-import { GREETINGS, PHASE_INTROS, FINISHES, ELMEX_REMINDER, pick } from './speeches.js';
+import { GREETINGS, PHASE_INTROS, FINISHES, ELMEX_REMINDERS, pickRandom } from './speeches.js';
 import { heroSvg } from './svg/hero.js';
 import { mouthSvg, ZONE_SELECTORS, BRUSH_ANCHORS } from './svg/mouth.js';
 import { ringSvg, RING_CIRCUMFERENCE } from './svg/ring.js';
@@ -18,11 +18,13 @@ function show(id) {
 }
 
 let state = loadState(localStorage);
-const seed = Object.keys(state.entries).length;
+let lastGreeting = null;
+let lastFinish = null;
 
 function renderStart() {
   $('hero-slot').innerHTML = heroSvg();
-  $('greeting').textContent = pick(GREETINGS, seed);
+  lastGreeting = pickRandom(GREETINGS, lastGreeting);
+  $('greeting').textContent = lastGreeting;
   if (state.streak > 0) {
     $('streak-badge').hidden = false;
     $('streak-badge').textContent = `🔥 ${state.streak} Abende in Folge!`;
@@ -152,12 +154,13 @@ document.querySelectorAll('.face').forEach((btn) => {
 
 function renderReward() {
   $('reward-hero').innerHTML = heroSvg({ cheering: true });
-  $('reward-text').textContent = `${pick(FINISHES, seed)}  🔥 ${state.streak} in Folge!`;
+  lastFinish = pickRandom(FINISHES, lastFinish);
+  $('reward-text').textContent = `${lastFinish}  🔥 ${state.streak} in Folge!`;
   $('village-slot').innerHTML = villageSvg(state.hinkelsteine);
   const banner = $('elmex-banner');
   if (isSundayInBerlin(new Date())) {
     banner.hidden = false;
-    banner.textContent = ELMEX_REMINDER;
+    banner.textContent = pickRandom(ELMEX_REMINDERS);
   } else {
     banner.hidden = true;
   }
